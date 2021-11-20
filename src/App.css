@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+.App {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-float infinite 3s ease-in-out;
+    }
+}
+
+.App-header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.App-link {
+    color: rgb(112, 76, 182);
+}
+
+/*asdfsada dasd asd sad as dsad asdas dsa*/
+.header {
+    background-image: url("./img/ugur-akdemir-XT-o5O458as-unsplash.jpg");
+    margin-bottom: 50px;
+}
+label{
+    color: white;
+}
+h1{
+    color: white;
+}
+.shadow{
+    padding: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.container {
+    width: 100%;
+}
+
+input {
+}
+
+form {
+    position: relative;
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto 20px;
+}
+
+.search__input {
+    width: 100%;
+    padding: 5px;
+}
+
+.btn-search {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    width: 1em;
+    transform: translateY(-50%);
+}
+
+.search__selects {
+    display: flex;
+    justify-content: space-around;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+select {
+    font-size: .8em;
+    background-color: white;
+    border: 1px solid gray;
+    width: 100%;
+    padding: 5px;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.total-books {
+    width: 100%;
+}
+.book-item{
+    width: 100%;
+}
+.book {
+    background-color: rgba(156, 156, 156, 0.13);
+    width: 300px;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+.book__image {
+    width: 60%;
+    box-shadow: 5px 5px 5px 1px black;
+    transition: transform .2s ease;
+}
+.book__image:hover{
+    transform: scale(1.1);
+}
+.book__description {
+    text-align: left;
+}
+
+.book__categories {
+    color: gray;
+    font-size: .8em;
+}
+
+.book__title {
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+
+.book__authors {
+    margin-top: 0;
+    color: gray;
+    font-size: .8em;
+}
+.load-button{
+    width: 100%;
+}
+.load-books {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 25px;
+}
+
+/* dasd asdas das dasd asdas das das dsa*/
+/* single-book */
+.asd{
+    margin-top: -50px;
+}
+.single-book{
+    display: flex;
+    justify-content: space-between;
+}
+.book-image{
+    background-color: rgba(156, 156, 156, 0.13);
+    width: 40%;
+    padding: 50px 0;
+}
+.book-image img {
+    width: 40%;
+    box-shadow: 5px 5px 10px 1px black;
+
+}
+.book-description{
+    width: 60%;
+    text-align: left;
+    font-size: 2em;
+}
+.book-categories, .book-authors{
+    margin-top: 0;
+    color: gray;
+    font-size: .7em;
+}
+.book-link{
+    color: blue;
+    font-size: .7em;
+}
+.book-content{
+    padding: 25px;
+}
+/* single-book */
+
+@keyframes App-logo-float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
