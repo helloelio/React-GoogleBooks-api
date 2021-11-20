@@ -197,6 +197,16 @@ main {
     .book{
         width: 250px;
     }
+    .single-book{
+        flex-direction: column;
+    }
+    .book-image{
+        width: 100%;
+    }
+    .book-description{
+        font-size: 1.2em;
+        width: 100%;
+    }
 }
 
 @keyframes App-logo-float {
