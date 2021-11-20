@@ -146,6 +146,7 @@ main {
 }
 
 /* dasd asdas das dasd asdas das das dsa*/
+
 /* single-book */
 .asd{
     margin-top: -50px;
@@ -182,6 +183,21 @@ main {
     padding: 25px;
 }
 /* single-book */
+
+@media (max-width: 540px) {
+    .shadow{
+        padding: 40px;
+    }
+    .search__selects{
+        flex-direction: column;
+    }
+    .search__selects-categories{
+        margin-bottom: 20px;
+    }
+    .book{
+        width: 250px;
+    }
+}
 
 @keyframes App-logo-float {
     0% {

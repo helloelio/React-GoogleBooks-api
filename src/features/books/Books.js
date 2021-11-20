@@ -13,6 +13,7 @@ function BookItems(props) {
                     <div className='book'>
                         <img id={book.id} className='book__image'
                              src={_.get(book, "volumeInfo.imageLinks.thumbnail", `${notFound}`)}
+                             alt='asd'
                         />
                         <div className='book__description'>
                             <p className='book__categories'>{_.get(book, "volumeInfo.categories", '')}</p>
