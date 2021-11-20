@@ -2,7 +2,6 @@ import _ from "lodash";
 import React from "react";
 import notFound from './img/not-found.png';
 import {
-    BrowserRouter,
     Link
 } from "react-router-dom";
 
