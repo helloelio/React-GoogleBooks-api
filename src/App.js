@@ -6,7 +6,8 @@ import BookItem from './features/book/BookItem';
 import {
     BrowserRouter,
     Routes,
-    Route
+    Route,
+    Navigate
 } from "react-router-dom";
 import './App.css';
 import axios from "axios";
@@ -95,8 +96,19 @@ function App() {
                 <BooksCounter total={total}/>
                 <BrowserRouter>
                     <Routes>
-                        <Route path='/' element={<Books total={total} result={result} key={result.map(i => i.id)} test={test} bookId={book}/>}/>
-                        <Route path={`/book/:${book.id}`} element={<BookItem book={book}/>}/>
+                        {!book &&
+                        <Route
+                            path={`/book/:${book.id}`}
+                            element={<Navigate to='/'/>}/>
+                        }
+                        <Route
+                            path='/'
+                            element={<Books total={total} key={result.map(i => i.id)} result={result} test={test} bookId={book}/>}
+                        />
+                        <Route
+                            path={`/book/:${book.id}`}
+                            element={<BookItem key={book.id} book={book}/>}
+                        />
                     </Routes>
                 </BrowserRouter>
                 <div className='load-button'>
