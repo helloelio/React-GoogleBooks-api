@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import BookItem from './features/book/BookItem';
-
 // TODO: заспределить по компонентам, рефактор, сортировка, поиск по категориям
 
 import {
@@ -10,67 +8,65 @@ import {
 } from "react-router-dom";
 import './App.css';
 import axios from "axios";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import Books from "./features/books/Books";
-import _ from "lodash";
-
-let maxResult = 30;
+import BookItem from './features/book/BookItem';
+import SortSelect from './features/sortSelect';
+import CategoriesSelect from './features/categoriesSelect';
+import SearchInput from './features/searchInput';
+import {useDispatch, useSelector} from "react-redux";
 
 function App() {
-    const [books, setBooks] = useState("");
-    const [categorie, setCategorie] = useState("");
-    const [result, setResult] = useState([]);
-    const [total, setTotal] = useState("");
-    const [apiKey] = useState("AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c");
-    const [book, setBook] = useState("");
+    const dispatch = useDispatch();
+    const apiKey = useSelector(state => state.booksAPI);
+    const categorie = useSelector(state => state.categorieParameter.categorie);
+    const searchParameter = useSelector(state => state.searchParameter.input);
+    const books = useSelector(state => state.booksList.books);
+    const totalBooks = useSelector(state => state.totalBooks.total);
+    const book = useSelector(state => state.bookItem.book);
+    const maxResult = useSelector(state => state.searchParameter.maxResult)
 
-    function handleChange(event) {
-        const book = event.target.value;
-        setBooks(book)
+    function getSearchParameter(event) {
+        dispatch({type: 'GET_SEARCH_VALUE', payload: event.target.value})
+    }
+
+    function getCategorieParameter(event) {
+        dispatch({type: 'GET_CATEGORIE', payload: event.target.value});
     }
 
     function handleSubmit(event) {
         event.preventDefault();
         if (!categorie || categorie === 'all') {
-            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${books}&key=${apiKey}&maxResults=30`)
+            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&key=${apiKey}&maxResults=${maxResult}`)
                 .then(data => {
-                    setTotal(data.data.totalItems);
-                    setResult(data.data.items);
+                    dispatch({type: 'GET_TOTAL', payload: data.data.totalItems})
+                    dispatch({type: 'GET_BOOKS', payload: data.data.items})
                 })
         } else {
-            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${books}&key=${apiKey}&maxResults=30`)
+            // TODO: Сделать фильтр по категориям!
+            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&key=${apiKey}&maxResults=${maxResult}`)
                 .then(data => {
-                    setTotal(data.data.totalItems);
-                    setResult(data.data.items);
-                    // TODO: Сделать фильтр по категориям!
+                    dispatch({type: 'GET_TOTAL', payload: data.data.totalItems})
+                    dispatch({type: 'GET_FILTER_BOOKS', payload: {data: data.data.items, categorie: categorie}})
                 })
         }
-    }
-
-    function sortBooks(event) {
-        return result.sort((a, b) => {
-            // TODO: Сделать сортировку!
-        })
-
     }
 
     function getBook(event) {
         axios.get(`https://www.googleapis.com/books/v1/volumes/${event.target.id}?key=AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c`)
             .then(data => {
-                setBook(data.data);
+                dispatch({type: 'GET_BOOK', payload: data.data});
             })
     }
 
-    function setFilterParam(event) {
-        setCategorie(event.target.value);
+    // TODO: Сделать сортировку!
+    function sortBooks(event) {
+        console.log(event.target.value)
     }
 
     function handleLoadBooks() {
-        console.log(maxResult);
-        axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&key=${apiKey}&maxResults=${maxResult += 10}`)
+        axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&key=${apiKey}&maxResults=${maxResult}`)
             .then(data => {
-                setResult(data.data.items);
+                dispatch({type: 'GET_BOOKS', payload: data.data.items})
             })
     }
 
@@ -78,36 +74,16 @@ function App() {
         <div className="App">
             <header className='header'>
                 <div className="shadow">
-                    <h1 className='search__title'>Search for books</h1>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            onChange={handleChange}
-                            className='search__input'
-                            type="text"
-                            placeholder='Enter book name'/>
-                        <FontAwesomeIcon className='btn-search' icon={faSearch}/>
-                        <input className='btn-search' type='submit' value=''/>
-                    </form>
+                    <a className='title-link' href="/">
+                        <h1 className='search__title'>Search for books</h1>
+                    </a>
+                    <SearchInput
+                        handleSubmit={handleSubmit}
+                        getSearchParameter={getSearchParameter}
+                    />
                     <div className='search__selects'>
-                        <div className='search__selects-categories'>
-                            <label htmlFor="categories">Categories</label>
-                            <select name="categories" id="categories" onChange={setFilterParam}>
-                                <option value="all">all</option>
-                                <option value="art">art</option>
-                                <option value="biography">biography</option>
-                                <option value="computers">computers</option>
-                                <option value="history">history</option>
-                                <option value="medical">medical</option>
-                                <option value="poetry">poetry</option>
-                            </select>
-                        </div>
-                        <div className='search__selects-sort'>
-                            <label htmlFor="sorting">Sorting by</label>
-                            <select name="sorting" id="sorting" onChange={sortBooks}>
-                                <option value="relevance ">relevance</option>
-                                <option value="newest">newest</option>
-                            </select>
-                        </div>
+                        <CategoriesSelect getCategorieParameter={getCategorieParameter}/>
+                        <SortSelect sortBooks={sortBooks}/>
                     </div>
                 </div>
             </header>
@@ -116,12 +92,24 @@ function App() {
                     <Routes>
                         <Route
                             path='/'
-                            element={<Books total={total} key={result.map(i => i.id)} result={result} getBook={getBook}
-                                            bookId={book}/>}
+                            element={
+                                <Books total={totalBooks}
+                                       key={books.map(i => i.id)}
+                                       result={books}
+                                       getBook={getBook}
+                                       bookId={book}
+                                       categorie={categorie}
+                                />
+                            }
                         />
                         <Route
                             path={`/book/:${book.id}`}
-                            element={<BookItem key={book.id} book={book}/>}
+                            element={
+                                <BookItem
+                                key={book.id}
+                                book={book}
+                                />
+                            }
                         />
                     </Routes>
                 </BrowserRouter>
