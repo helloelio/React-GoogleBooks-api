@@ -5,33 +5,42 @@
     text-align: center;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 /*asdfsada dasd asd sad as dsad asdas dsa*/
-.search__title{
+.search__title {
     animation: App-logo-float infinite 3s ease-in-out;
     margin-bottom: 10px;
 }
-.title-link{
+
+.title-link {
     color: white;
 }
+
 .header {
-    background-image: url("./img/ugur-akdemir-XT-o5O458as-unsplash.jpg");
-    margin-bottom: 50px;
+    background-image: url("./img/background.jpg");
+    background-size: cover;
 }
-label{
+
+label {
+    font-family: inherit;
     color: white;
 }
-h1{
+
+h1 {
     color: white;
 }
-.shadow{
+
+.shadow {
     padding: 100px;
     background-color: rgba(0, 0, 0, 0.7);
 }
+
 .container {
     width: 100%;
-}
-
-input {
 }
 
 form {
@@ -42,8 +51,13 @@ form {
 }
 
 .search__input {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1em;
     width: 100%;
-    padding: 5px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 8px;
 }
 
 .btn-search {
@@ -65,11 +79,15 @@ form {
 }
 
 select {
-    font-size: .8em;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
     background-color: white;
     border: 1px solid gray;
     width: 100%;
     padding: 5px;
+}
+option{
+    font-family: 'Roboto', sans-serif;
 }
 
 .book-items {
@@ -81,9 +99,11 @@ select {
 .total-books {
     width: 100%;
 }
-.book-item{
+
+.book-item {
     width: 100%;
 }
+
 .book {
     background-color: rgba(156, 156, 156, 0.13);
     width: 300px;
@@ -96,9 +116,11 @@ select {
     box-shadow: 5px 5px 5px 1px black;
     transition: transform .2s ease;
 }
-.book__image:hover{
+
+.book__image:hover {
     transform: scale(1.1);
 }
+
 .book__description {
     text-align: left;
 }
@@ -118,9 +140,11 @@ select {
     color: gray;
     font-size: .8em;
 }
-.load-button{
+
+.load-button {
     width: 100%;
 }
+
 .load-books {
     cursor: pointer;
     border: none;
@@ -132,62 +156,76 @@ select {
 /* dasd asdas das dasd asdas das das dsa*/
 
 /* single-book */
-.asd{
+.asd {
     margin-top: -50px;
 }
-.single-book{
+
+.single-book {
     display: flex;
     justify-content: space-between;
 }
-.book-image{
+
+.book-image {
     background-color: rgba(156, 156, 156, 0.13);
     width: 40%;
     padding: 50px 0;
 }
+
 .book-image img {
     width: 40%;
     box-shadow: 5px 5px 10px 1px black;
 
 }
-.book-description{
+
+.book-description {
     width: 60%;
     text-align: left;
     font-size: 2em;
 }
-.book-categories, .book-authors{
+
+.book-categories, .book-authors {
     margin-top: 0;
     color: gray;
     font-size: .7em;
 }
-.book-link{
+
+.book-link {
     color: blue;
     font-size: .7em;
 }
-.book-content{
+
+.book-content {
     padding: 25px;
 }
+
 /* single-book */
 
 @media (max-width: 540px) {
-    .shadow{
+    .shadow {
         padding: 40px;
     }
-    .search__selects{
+
+    .search__selects {
         flex-direction: column;
     }
-    .search__selects-categories{
+
+    .search__selects-categories {
         margin-bottom: 20px;
     }
-    .book{
+
+    .book {
         width: 250px;
     }
-    .single-book{
+
+    .single-book {
         flex-direction: column;
     }
-    .book-image{
+
+    .book-image {
         width: 100%;
     }
-    .book-description{
+
+    .book-description {
         font-size: 1.2em;
         width: 100%;
     }

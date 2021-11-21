@@ -1,11 +1,5 @@
-import React, {useState} from 'react';
-// TODO: заспределить по компонентам, рефактор, сортировка, поиск по категориям
-
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-} from "react-router-dom";
+import React from 'react';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
 import axios from "axios";
 import Books from "./features/books/Books";
@@ -99,11 +93,10 @@ function App() {
                             path='/'
                             element={
                                 <Books total={totalBooks}
-                                       key={books.map(i => i.id)}
+                                       bookId={books.map(i => i.id)}
                                        result={books}
                                        getBook={getBook}
                                        handleLoadBooks={handleLoadBooks}
-                                       bookId={book}
                                        categorie={categorie}
                                 />
                             }
