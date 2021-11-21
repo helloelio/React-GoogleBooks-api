@@ -8,9 +8,9 @@ import BooksCounter from "./BooksCounter";
 
 function BookItems(props) {
     return (
-        <div className='book-items'>
+        <div className='book-items' key={props.bookId}>
             <BooksCounter total={props.total}/>
-            {
+            {props.result ?
                 props.result.map(book => (
                     <nav>
                         <Link to={`book/${book.id}`} onClick={props.getBook} id={book.id} key={book.id}>
@@ -28,10 +28,11 @@ function BookItems(props) {
                         </Link>
                     </nav>
                 ))
-            }
+                : <div>asd</div>}
             <div className='load-button'>
                 {props.result.length > 0 &&
-                <button onClick={props.handleLoadBooks} className='load-books'> Load more...</button>
+                <button onClick={props.handleLoadBooks}
+                        className={`load-books ${props.loading}`}>Load more</button>
                 }
             </div>
         </div>
