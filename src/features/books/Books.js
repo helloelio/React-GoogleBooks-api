@@ -32,7 +32,7 @@ function BookItems(props) {
             }
             <div className='load-button'>
                 {props.result.length > 0 &&
-                <button onClick={'handleLoadBooks'} className='load-books'> Load more...</button>
+                <button onClick={props.handleLoadBooks} className='load-books'> Load more...</button>
                 }
             </div>
         </div>
