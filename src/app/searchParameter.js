@@ -1,5 +1,5 @@
 const defaultState = {
-    maxResult: 5,
+    maxResult: 30,
     input: '',
 }
 
