@@ -5,30 +5,14 @@
     text-align: center;
 }
 
-h1 {
-    margin: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-float infinite 3s ease-in-out;
-    }
-}
-
-.App-header {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.App-link {
-    color: rgb(112, 76, 182);
-}
-
 /*asdfsada dasd asd sad as dsad asdas dsa*/
+.search__title{
+    animation: App-logo-float infinite 3s ease-in-out;
+    margin-bottom: 10px;
+}
+.title-link{
+    color: white;
+}
 .header {
     background-image: url("./img/ugur-akdemir-XT-o5O458as-unsplash.jpg");
     margin-bottom: 50px;
