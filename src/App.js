@@ -14,7 +14,7 @@ import SortSelect from './features/sortSelect';
 import CategoriesSelect from './features/categoriesSelect';
 import SearchInput from './features/searchInput';
 import {useDispatch, useSelector} from "react-redux";
-import {getBooksAction, getFilterBooksAction} from "./app/booksList";
+import {getBooksAction, getFilterBooksAction, loadBooksAction} from "./app/booksList";
 import {getCategorieParameterAction} from "./app/categorieParameter";
 import {getTotalBooksAction} from "./app/totalBooks";
 import {getBookAction} from "./app/bookItem";
@@ -71,7 +71,7 @@ function App() {
     function handleLoadBooks() {
         axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&key=${apiKey}&maxResults=${maxResult}`)
             .then(data => {
-                dispatch(getBooksAction(data.data.items))
+                dispatch(loadBooksAction(data.data.items))
             })
     }
 
@@ -102,6 +102,7 @@ function App() {
                                        key={books.map(i => i.id)}
                                        result={books}
                                        getBook={getBook}
+                                       handleLoadBooks={handleLoadBooks}
                                        bookId={book}
                                        categorie={categorie}
                                 />
