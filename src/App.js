@@ -112,8 +112,8 @@ function App() {
                             path={`/book/:${book.id}`}
                             element={
                                 <BookItem
-                                key={book.id}
-                                book={book}
+                                    key={book.id}
+                                    book={book}
                                 />}
                         />
                     </Routes>

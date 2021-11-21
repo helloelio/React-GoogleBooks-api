@@ -10,7 +10,6 @@ function BookItems(props) {
     return (
         <div className='book-items'>
             <BooksCounter total={props.total}/>
-            { props.categorie }
             {
                 props.result.map(book => (
                     <nav>
