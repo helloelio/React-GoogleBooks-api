@@ -1,25 +1,25 @@
 import React, {useState} from 'react';
 import BookItem from './features/book/BookItem';
 
-// TODO: заспределить по компонентам, рефактор, сортировка,
+// TODO: заспределить по компонентам, рефактор, сортировка, поиск по категориям
 
 import {
     BrowserRouter,
     Routes,
     Route,
-    Navigate
 } from "react-router-dom";
 import './App.css';
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import BooksCounter from "./features/books/BooksCounter";
 import Books from "./features/books/Books";
+import _ from "lodash";
 
 let maxResult = 30;
 
 function App() {
     const [books, setBooks] = useState("");
+    const [categorie, setCategorie] = useState("");
     const [result, setResult] = useState([]);
     const [total, setTotal] = useState("");
     const [apiKey] = useState("AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c");
@@ -32,19 +32,38 @@ function App() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.get(`https://www.googleapis.com/books/v1/volumes?q=${books}&key=${apiKey}&maxResults=30`)
-            .then(data => {
-                result.push(data.data.items);
-                setTotal(data.data.totalItems);
-                setResult(data.data.items);
-            })
+        if (!categorie || categorie === 'all') {
+            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${books}&key=${apiKey}&maxResults=30`)
+                .then(data => {
+                    setTotal(data.data.totalItems);
+                    setResult(data.data.items);
+                })
+        } else {
+            axios.get(`https://www.googleapis.com/books/v1/volumes?q=${books}&key=${apiKey}&maxResults=30`)
+                .then(data => {
+                    setTotal(data.data.totalItems);
+                    setResult(data.data.items);
+                    // TODO: Сделать фильтр по категориям!
+                })
+        }
     }
 
-    function test(event) {
+    function sortBooks(event) {
+        return result.sort((a, b) => {
+            // TODO: Сделать сортировку!
+        })
+
+    }
+
+    function getBook(event) {
         axios.get(`https://www.googleapis.com/books/v1/volumes/${event.target.id}?key=AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c`)
             .then(data => {
                 setBook(data.data);
             })
+    }
+
+    function setFilterParam(event) {
+        setCategorie(event.target.value);
     }
 
     function handleLoadBooks() {
@@ -72,7 +91,7 @@ function App() {
                     <div className='search__selects'>
                         <div className='search__selects-categories'>
                             <label htmlFor="categories">Categories</label>
-                            <select name="categories" id="categories">
+                            <select name="categories" id="categories" onChange={setFilterParam}>
                                 <option value="all">all</option>
                                 <option value="art">art</option>
                                 <option value="biography">biography</option>
@@ -84,7 +103,7 @@ function App() {
                         </div>
                         <div className='search__selects-sort'>
                             <label htmlFor="sorting">Sorting by</label>
-                            <select name="sorting" id="sorting">
+                            <select name="sorting" id="sorting" onChange={sortBooks}>
                                 <option value="relevance ">relevance</option>
                                 <option value="newest">newest</option>
                             </select>
@@ -93,17 +112,12 @@ function App() {
                 </div>
             </header>
             <main>
-                <BooksCounter total={total}/>
                 <BrowserRouter>
                     <Routes>
-                        {!book &&
-                        <Route
-                            path={`/book/:${book.id}`}
-                            element={<Navigate to='/'/>}/>
-                        }
                         <Route
                             path='/'
-                            element={<Books total={total} key={result.map(i => i.id)} result={result} test={test} bookId={book}/>}
+                            element={<Books total={total} key={result.map(i => i.id)} result={result} getBook={getBook}
+                                            bookId={book}/>}
                         />
                         <Route
                             path={`/book/:${book.id}`}
@@ -111,11 +125,6 @@ function App() {
                         />
                     </Routes>
                 </BrowserRouter>
-                <div className='load-button'>
-                    {result.length > 0 &&
-                    <button onClick={handleLoadBooks} className='load-books'> Load more...</button>
-                    }
-                </div>
             </main>
         </div>
     );
