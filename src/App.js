@@ -14,6 +14,11 @@ import SortSelect from './features/sortSelect';
 import CategoriesSelect from './features/categoriesSelect';
 import SearchInput from './features/searchInput';
 import {useDispatch, useSelector} from "react-redux";
+import {getBooksAction, getFilterBooksAction} from "./app/booksList";
+import {getCategorieParameterAction} from "./app/categorieParameter";
+import {getTotalBooksAction} from "./app/totalBooks";
+import {getBookAction} from "./app/bookItem";
+import {getSearchValueAction} from "./app/searchParameter";
 
 function App() {
     const dispatch = useDispatch();
@@ -26,11 +31,11 @@ function App() {
     const maxResult = useSelector(state => state.searchParameter.maxResult)
 
     function getSearchParameter(event) {
-        dispatch({type: 'GET_SEARCH_VALUE', payload: event.target.value})
+        dispatch(getSearchValueAction(event.target.value))
     }
 
     function getCategorieParameter(event) {
-        dispatch({type: 'GET_CATEGORIE', payload: event.target.value});
+        dispatch(getCategorieParameterAction(event.target.value))
     }
 
     function handleSubmit(event) {
@@ -38,15 +43,15 @@ function App() {
         if (!categorie || categorie === 'all') {
             axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&key=${apiKey}&maxResults=${maxResult}`)
                 .then(data => {
-                    dispatch({type: 'GET_TOTAL', payload: data.data.totalItems})
-                    dispatch({type: 'GET_BOOKS', payload: data.data.items})
+                    dispatch(getTotalBooksAction(data.data.totalItems))
+                    dispatch(getBooksAction(data.data.items))
                 })
         } else {
             // TODO: Сделать фильтр по категориям!
             axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&key=${apiKey}&maxResults=${maxResult}`)
                 .then(data => {
-                    dispatch({type: 'GET_TOTAL', payload: data.data.totalItems})
-                    dispatch({type: 'GET_FILTER_BOOKS', payload: {data: data.data.items, categorie: categorie}})
+                    dispatch(getTotalBooksAction(data.data.totalItems))
+                    dispatch(getFilterBooksAction({data: data.data.items, categorie: categorie}))
                 })
         }
     }
@@ -54,7 +59,7 @@ function App() {
     function getBook(event) {
         axios.get(`https://www.googleapis.com/books/v1/volumes/${event.target.id}?key=AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c`)
             .then(data => {
-                dispatch({type: 'GET_BOOK', payload: data.data});
+                dispatch(getBookAction(data.data))
             })
     }
 
@@ -66,7 +71,7 @@ function App() {
     function handleLoadBooks() {
         axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&key=${apiKey}&maxResults=${maxResult}`)
             .then(data => {
-                dispatch({type: 'GET_BOOKS', payload: data.data.items})
+                dispatch(getBooksAction(data.data.items))
             })
     }
 
@@ -108,8 +113,7 @@ function App() {
                                 <BookItem
                                 key={book.id}
                                 book={book}
-                                />
-                            }
+                                />}
                         />
                     </Routes>
                 </BrowserRouter>

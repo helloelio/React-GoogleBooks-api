@@ -2,9 +2,11 @@ const defaultState = {
     categorie: 'all',
 }
 
+const GET_CATEGORIE = 'GET_CATEGORIE';
+
 export const categorieParameter = (state = defaultState, action) => {
     switch (action.type) {
-        case 'GET_CATEGORIE':
+        case GET_CATEGORIE:
             return {...state, categorie: action.payload}
             break;
         default:
@@ -12,3 +14,5 @@ export const categorieParameter = (state = defaultState, action) => {
 
     }
 }
+
+export const getCategorieParameterAction = (payload) => ({type: GET_CATEGORIE, payload});
