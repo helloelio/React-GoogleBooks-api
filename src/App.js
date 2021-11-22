@@ -7,6 +7,7 @@ import BookItem from "./features/book/BookItem";
 import SortSelect from "./features/sortSelect";
 import CategoriesSelect from "./features/categoriesSelect";
 import SearchInput from "./features/searchInput";
+import ErrorMessage from "./features/error/error";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getBooksAction,
@@ -20,7 +21,7 @@ import {getBookAction} from "./app/bookItem";
 import {getSearchValueAction} from "./app/searchParameter";
 import {loadingAction} from "./app/loading";
 import LoadComp from "./features/loading/loading";
-import {bobo} from "./app/asyncActions";
+import {errorAction} from "./app/searchError";
 
 function App() {
     const dispatch = useDispatch();
@@ -32,7 +33,8 @@ function App() {
     const totalBooks = useSelector((state) => state.totalBooks.total);
     const book = useSelector((state) => state.bookItem.book);
     const maxResult = useSelector((state) => state.searchParameter.maxResult);
-    const load = useSelector((state) => state.setLoadingState.load);
+    const load = useSelector((state) => state.setLoadingState.load)
+    const error = useSelector(state => state.searchError.error);
 
     function getSearchParameter(event) {
         dispatch(getSearchValueAction(event.target.value));
@@ -47,35 +49,39 @@ function App() {
     }
 
     function handleSubmit(event) {
-        dispatch(bobo({searchParameter, sortParameter, apiKey, maxResult, category}))
         event.preventDefault();
-        if (!category || category === "all") {
-            dispatch(loadingAction(true));
-            axios
-                .get(
-                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
-                )
-                .then((data) => {
-                    dispatch(getTotalBooksAction(data.data.totalItems));
-                    dispatch(getBooksAction(data.data.items));
-                    dispatch(loadingAction(false));
-                });
+        if (searchParameter !== '') {
+            dispatch(errorAction(false))
+            if (!category || category === "all") {
+                dispatch(loadingAction(true));
+                axios
+                    .get(
+                        `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
+                    )
+                    .then((data) => {
+                        dispatch(getTotalBooksAction(data.data.totalItems));
+                        dispatch(getBooksAction(data.data.items));
+                        dispatch(loadingAction(false));
+                    });
+            } else {
+                dispatch(loadingAction(true));
+                axios
+                    .get(
+                        `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${category}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
+                    )
+                    .then((data) => {
+                        dispatch(getTotalBooksAction(data.data.totalItems));
+                        dispatch(
+                            getFilterBooksAction({
+                                data: data.data.items,
+                                categorie: category,
+                            })
+                        );
+                        dispatch(loadingAction(false));
+                    });
+            }
         } else {
-            dispatch(loadingAction(true));
-            axios
-                .get(
-                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${category}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
-                )
-                .then((data) => {
-                    dispatch(getTotalBooksAction(data.data.totalItems));
-                    dispatch(
-                        getFilterBooksAction({
-                            data: data.data.items,
-                            categorie: category,
-                        })
-                    );
-                    dispatch(loadingAction(false));
-                });
+            dispatch(errorAction(true))
         }
     }
 
@@ -90,12 +96,12 @@ function App() {
 
     function handleLoadBooks() {
         if (!category || category === "all") {
-        axios.get(
+            axios.get(
                 `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
             )
-            .then((data) => {
-                dispatch(loadBooksAction(data.data.items));
-            });
+                .then((data) => {
+                    dispatch(loadBooksAction(data.data.items));
+                });
         } else {
             axios
                 .get(
@@ -118,6 +124,7 @@ function App() {
                         handleSubmit={handleSubmit}
                         getSearchParameter={getSearchParameter}
                     />
+                    {error && <ErrorMessage/>}
                     <div className="search__selects">
                         <CategoriesSelect
                             getCategorieParameter={getCategorieParameter}
