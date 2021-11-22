@@ -9,7 +9,7 @@ function searchInput(props) {
                 onChange={props.getSearchParameter}
                 className='search__input'
                 type="text"
-                placeholder='Enter book name'/>
+                placeholder='Enter the title of the book'/>
             <FontAwesomeIcon className='btn-search' icon={faSearch}/>
             <input className='btn-search' type='submit' value=''/>
         </form>
