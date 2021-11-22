@@ -7,6 +7,7 @@ import {booksList} from "./booksList";
 import {totalBooks} from "./totalBooks";
 import {bookItem} from "./bookItem";
 import {sortParameter} from "./sortParameter";
+import {setLoadingState} from "./loading";
 
 export const store = configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
         sortParameter,
         searchParameter,
         counter: counterReducer,
+        setLoadingState,
     },
 });

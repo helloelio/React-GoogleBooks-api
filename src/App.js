@@ -18,6 +18,8 @@ import { sortParameterAction } from "./app/sortParameter";
 import { getTotalBooksAction } from "./app/totalBooks";
 import { getBookAction } from "./app/bookItem";
 import { getSearchValueAction } from "./app/searchParameter";
+import { loadingAction } from "./app/loading";
+import LoadComp from "./features/loading/loading";
 
 function App() {
     const dispatch = useDispatch();
@@ -31,6 +33,7 @@ function App() {
     const totalBooks = useSelector((state) => state.totalBooks.total);
     const book = useSelector((state) => state.bookItem.book);
     const maxResult = useSelector((state) => state.searchParameter.maxResult);
+    const load = useSelector((state) => state.setLoadingState.load);
 
     function getSearchParameter(event) {
         dispatch(getSearchValueAction(event.target.value));
@@ -47,6 +50,7 @@ function App() {
     function handleSubmit(event) {
         event.preventDefault();
         if (!categorie || categorie === "all") {
+            dispatch(loadingAction(true));
             axios
                 .get(
                     `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
@@ -54,12 +58,13 @@ function App() {
                 .then((data) => {
                     dispatch(getTotalBooksAction(data.data.totalItems));
                     dispatch(getBooksAction(data.data.items));
+                    dispatch(loadingAction(false));
                 });
         } else {
-            // TODO: Сделать фильтр по категориям!
+            dispatch(loadingAction(true));
             axios
                 .get(
-                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&key=${apiKey}&maxResults=${maxResult}`
+                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${categorie}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
                 )
                 .then((data) => {
                     dispatch(getTotalBooksAction(data.data.totalItems));
@@ -69,6 +74,7 @@ function App() {
                             categorie: categorie,
                         })
                     );
+                    dispatch(loadingAction(false));
                 });
         }
     }
@@ -113,27 +119,32 @@ function App() {
                 </div>
             </header>
             <main>
-                <BrowserRouter>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <Books
-                                    total={totalBooks}
-                                    bookId={books.map((i) => i.id)}
-                                    result={books}
-                                    getBook={getBook}
-                                    handleLoadBooks={handleLoadBooks}
-                                    categorie={categorie}
-                                />
-                            }
-                        />
-                        <Route
-                            path={`/book/:${book.id}`}
-                            element={<BookItem key={book.id} book={book} />}
-                        />
-                    </Routes>
-                </BrowserRouter>
+                {load ? (
+                    <LoadComp />
+                ) : (
+                    <BrowserRouter>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <Books
+                                        load={load}
+                                        total={totalBooks}
+                                        bookId={books.map((i) => i.id)}
+                                        result={books}
+                                        getBook={getBook}
+                                        handleLoadBooks={handleLoadBooks}
+                                        categorie={categorie}
+                                    />
+                                }
+                            />
+                            <Route
+                                path={`/book/:${book.id}`}
+                                element={<BookItem key={book.id} book={book} />}
+                            />
+                        </Routes>
+                    </BrowserRouter>
+                )}
             </main>
         </div>
     );
