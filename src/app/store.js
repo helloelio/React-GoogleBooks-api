@@ -7,7 +7,6 @@ import {totalBooks} from "./totalBooks";
 import {bookItem} from "./bookItem";
 import {sortParameter} from "./sortParameter";
 import {setLoadingState} from "./loading";
-import {getBooks} from './asyncActions';
 import {searchError} from './searchError'
 
 export const store = configureStore({
@@ -21,6 +20,5 @@ export const store = configureStore({
         searchParameter,
         setLoadingState,
         searchError,
-        getBooks,
     },
 });
