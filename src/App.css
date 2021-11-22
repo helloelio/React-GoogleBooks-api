@@ -22,7 +22,6 @@ a {
 
 .header {
     background-image: url("./img/background.jpg");
-    background-size: cover;
 }
 
 label {
@@ -212,8 +211,21 @@ option {
 .book-content {
     padding: 25px;
 }
-
 /* single-book */
+
+/* error */
+.error-block{
+    background-color: rgba(255, 0, 0, 0.5);
+    max-width: 500px;
+    margin: 0 auto 10px;
+    padding: 10px 0;
+    animation: error-message .5s;
+}
+.error-text{
+    color: white;
+    margin: 0;
+    font-weight: 500;
+}
 
 @media (max-width: 540px) {
     .shadow {
@@ -243,6 +255,24 @@ option {
     .book-description {
         font-size: 1.2em;
         width: 100%;
+    }
+}
+
+@keyframes error-message {
+    0%{
+        opacity: 0;
+    }
+    25%{
+        opacity: .3;
+    }
+    50%{
+        opacity: .5;
+    }
+    75%{
+        opacity: .7;
+    }
+    100%{
+        opacity: 1;
     }
 }
 
