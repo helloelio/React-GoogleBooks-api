@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import "./App.css";
 import axios from "axios";
 import Books from "./features/books/Books";
@@ -7,26 +7,25 @@ import BookItem from "./features/book/BookItem";
 import SortSelect from "./features/sortSelect";
 import CategoriesSelect from "./features/categoriesSelect";
 import SearchInput from "./features/searchInput";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     getBooksAction,
     getFilterBooksAction,
     loadBooksAction,
 } from "./app/booksList";
-import { getCategorieParameterAction } from "./app/categorieParameter";
-import { sortParameterAction } from "./app/sortParameter";
-import { getTotalBooksAction } from "./app/totalBooks";
-import { getBookAction } from "./app/bookItem";
-import { getSearchValueAction } from "./app/searchParameter";
-import { loadingAction } from "./app/loading";
+import {getCategorieParameterAction} from "./app/categoryParameter";
+import {sortParameterAction} from "./app/sortParameter";
+import {getTotalBooksAction} from "./app/totalBooks";
+import {getBookAction} from "./app/bookItem";
+import {getSearchValueAction} from "./app/searchParameter";
+import {loadingAction} from "./app/loading";
 import LoadComp from "./features/loading/loading";
+import {bobo} from "./app/asyncActions";
 
 function App() {
     const dispatch = useDispatch();
     const apiKey = useSelector((state) => state.booksAPI);
-    const categorie = useSelector(
-        (state) => state.categorieParameter.categorie
-    );
+    const category = useSelector((state) => state.categoryParameter.category);
     const sortParameter = useSelector((state) => state.sortParameter.sort);
     const searchParameter = useSelector((state) => state.searchParameter.input);
     const books = useSelector((state) => state.booksList.books);
@@ -48,8 +47,9 @@ function App() {
     }
 
     function handleSubmit(event) {
+        dispatch(bobo({searchParameter, sortParameter, apiKey, maxResult, category}))
         event.preventDefault();
-        if (!categorie || categorie === "all") {
+        if (!category || category === "all") {
             dispatch(loadingAction(true));
             axios
                 .get(
@@ -64,14 +64,14 @@ function App() {
             dispatch(loadingAction(true));
             axios
                 .get(
-                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${categorie}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
+                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${category}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
                 )
                 .then((data) => {
                     dispatch(getTotalBooksAction(data.data.totalItems));
                     dispatch(
                         getFilterBooksAction({
                             data: data.data.items,
-                            categorie: categorie,
+                            categorie: category,
                         })
                     );
                     dispatch(loadingAction(false));
@@ -80,23 +80,31 @@ function App() {
     }
 
     function getBook(event) {
-        axios
-            .get(
-                `https://www.googleapis.com/books/v1/volumes/${event.target.id}?key=AIzaSyDftZCXJ1dcrgw9UX-PaH3D4UtI3TnXO3c`
-            )
+        dispatch(loadingAction(true));
+        axios.get(`https://www.googleapis.com/books/v1/volumes/${event.target.id}?key=${apiKey}`)
             .then((data) => {
                 dispatch(getBookAction(data.data));
+                dispatch(loadingAction(false));
             });
     }
 
     function handleLoadBooks() {
-        axios
-            .get(
-                `https://www.googleapis.com/books/v1/volumes?q=${book}&key=${apiKey}&maxResults=${maxResult}`
+        if (!category || category === "all") {
+        axios.get(
+                `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
             )
             .then((data) => {
                 dispatch(loadBooksAction(data.data.items));
             });
+        } else {
+            axios
+                .get(
+                    `https://www.googleapis.com/books/v1/volumes?q=${searchParameter}+subject=${category}&orderBy=${sortParameter}&key=${apiKey}&maxResults=${maxResult}`
+                )
+                .then((data) => {
+                    dispatch(loadBooksAction(data.data.items));
+                });
+        }
     }
 
     return (
@@ -114,13 +122,13 @@ function App() {
                         <CategoriesSelect
                             getCategorieParameter={getCategorieParameter}
                         />
-                        <SortSelect sortBooks={sortBooks} />
+                        <SortSelect sortBooks={sortBooks}/>
                     </div>
                 </div>
             </header>
             <main>
                 {load ? (
-                    <LoadComp />
+                    <LoadComp/>
                 ) : (
                     <BrowserRouter>
                         <Routes>
@@ -134,13 +142,13 @@ function App() {
                                         result={books}
                                         getBook={getBook}
                                         handleLoadBooks={handleLoadBooks}
-                                        categorie={categorie}
+                                        category={category}
                                     />
                                 }
                             />
                             <Route
                                 path={`/book/:${book.id}`}
-                                element={<BookItem key={book.id} book={book} />}
+                                element={<BookItem key={book.id} book={book}/>}
                             />
                         </Routes>
                     </BrowserRouter>
