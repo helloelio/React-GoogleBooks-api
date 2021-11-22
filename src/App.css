@@ -149,7 +149,6 @@ option {
     background-color: rgba(156, 156, 156, 0.3);
     cursor: pointer;
     border: none;
-    /* filter: drop-shadow(1px 1px 1px black); */
     box-shadow: 1px 1px 5px 1px black;
     font-weight: 500;
     font-size: 1em;
@@ -162,7 +161,13 @@ option {
 .load-books:hover {
     background-color: rgba(156, 156, 156, 0.5);
 }
-
+.loading-block {
+    margin-top: 20px;
+    width: 100%;
+}
+.loading-block img {
+    width: 50px;
+}
 /* dasd asdas das dasd asdas das das dsa*/
 
 /* single-book */
