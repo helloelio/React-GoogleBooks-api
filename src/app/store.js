@@ -8,6 +8,7 @@ import {bookItem} from "./bookItem";
 import {sortParameter} from "./sortParameter";
 import {setLoadingState} from "./loading";
 import {getBooks} from './asyncActions';
+import {searchError} from './searchError'
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
         sortParameter,
         searchParameter,
         setLoadingState,
+        searchError,
         getBooks,
     },
 });
