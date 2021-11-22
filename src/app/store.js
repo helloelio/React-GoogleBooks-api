@@ -1,13 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
 import booksAPI from "./booksAPI";
-import {categorieParameter} from "./categorieParameter";
+import {categoryParameter} from "./categoryParameter";
 import {searchParameter} from "./searchParameter";
 import {booksList} from "./booksList";
 import {totalBooks} from "./totalBooks";
 import {bookItem} from "./bookItem";
 import {sortParameter} from "./sortParameter";
 import {setLoadingState} from "./loading";
+import {getBooks} from './asyncActions';
 
 export const store = configureStore({
     reducer: {
@@ -15,10 +15,10 @@ export const store = configureStore({
         booksList,
         bookItem,
         totalBooks,
-        categorieParameter,
+        categoryParameter,
         sortParameter,
         searchParameter,
-        counter: counterReducer,
         setLoadingState,
+        getBooks,
     },
 });
