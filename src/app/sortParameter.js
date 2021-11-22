@@ -8,7 +8,6 @@ export const sortParameter = (state = defaultState, action) => {
   switch (action.type) {
     case GET_SORT:
       return { ...state, sort: action.payload };
-      break;
     default:
       return { ...state };
   }

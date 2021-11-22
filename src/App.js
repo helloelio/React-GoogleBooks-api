@@ -9,11 +9,7 @@ import CategoriesSelect from "./features/categoriesSelect";
 import SearchInput from "./features/searchInput";
 import ErrorMessage from "./features/error/error";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getBooksAction,
-    getFilterBooksAction,
-    loadBooksAction,
-} from "./app/booksList";
+import {getBooksAction, loadBooksAction} from "./app/booksList";
 import {getCategorieParameterAction} from "./app/categoryParameter";
 import {sortParameterAction} from "./app/sortParameter";
 import {getTotalBooksAction} from "./app/totalBooks";
@@ -71,12 +67,7 @@ function App() {
                     )
                     .then((data) => {
                         dispatch(getTotalBooksAction(data.data.totalItems));
-                        dispatch(
-                            getFilterBooksAction({
-                                data: data.data.items,
-                                categorie: category,
-                            })
-                        );
+                        dispatch(getBooksAction(data.data.items));
                         dispatch(loadingAction(false));
                     });
             }
