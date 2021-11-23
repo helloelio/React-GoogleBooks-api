@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import "./App.css";
 import axios from "axios";
 import Books from "./features/books/Books";
@@ -47,7 +47,7 @@ function App() {
     function handleSubmit(event) {
         event.preventDefault();
         if (searchParameter !== '') {
-            dispatch(errorAction(false))
+            dispatch(errorAction(false));
             if (!category || category === "all") {
                 dispatch(loadingAction(true));
                 axios
@@ -111,15 +111,10 @@ function App() {
                     <a className="title-link" href="/">
                         <h1 className="search__title">Search for books</h1>
                     </a>
-                    <SearchInput
-                        handleSubmit={handleSubmit}
-                        getSearchParameter={getSearchParameter}
-                    />
+                    <SearchInput handleSubmit={handleSubmit} getSearchParameter={getSearchParameter}/>
                     {error && <ErrorMessage/>}
                     <div className="search__selects">
-                        <CategoriesSelect
-                            getCategorieParameter={getCategorieParameter}
-                        />
+                        <CategoriesSelect getCategorieParameter={getCategorieParameter}/>
                         <SortSelect sortBooks={sortBooks}/>
                     </div>
                 </div>
@@ -128,28 +123,26 @@ function App() {
                 {load ? (
                     <LoadComp/>
                 ) : (
-                    <BrowserRouter>
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={
-                                    <Books
-                                        load={load}
-                                        total={totalBooks}
-                                        bookId={books.map((i) => i.id)}
-                                        result={books}
-                                        getBook={getBook}
-                                        handleLoadBooks={handleLoadBooks}
-                                        category={category}
-                                    />
-                                }
-                            />
-                            <Route
-                                path={`/book/:${book.id}`}
-                                element={<BookItem key={book.id} book={book}/>}
-                            />
-                        </Routes>
-                    </BrowserRouter>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Books
+                                    load={load}
+                                    total={totalBooks}
+                                    bookId={books.map((i) => i.id)}
+                                    result={books}
+                                    getBook={getBook}
+                                    handleLoadBooks={handleLoadBooks}
+                                    category={category}
+                                />
+                            }
+                        />
+                        <Route
+                            path={`/book/:${book.id}`}
+                            element={<BookItem key={book.id} book={book}/>}
+                        />
+                    </Routes>
                 )}
             </main>
         </div>
