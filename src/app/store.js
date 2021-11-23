@@ -10,15 +10,15 @@ import { setLoadingState } from './loading';
 import { searchError } from './searchError';
 
 export const store = configureStore({
-  reducer: {
-    booksAPI,
-    booksList,
-    bookItem,
-    totalBooks,
-    categoryParameter,
-    sortParameter,
-    searchParameter,
-    setLoadingState,
-    searchError,
-  },
+    reducer: {
+        booksAPI,
+        booksList,
+        bookItem,
+        totalBooks,
+        categoryParameter,
+        sortParameter,
+        searchParameter,
+        setLoadingState,
+        searchError,
+    },
 });
