@@ -1,16 +1,16 @@
 const defaultValue = {
-    book: {},
-}
+  book: {},
+};
 
-const GET_BOOK = 'GET_BOOK'
+const GET_BOOK = 'GET_BOOK';
 
 export const bookItem = (state = defaultValue, action) => {
-    switch (action.type) {
-        case GET_BOOK:
-            return {...state, book: action.payload}
-        default:
-            return {...state}
-    }
-}
+  switch (action.type) {
+    case GET_BOOK:
+      return { ...state, book: action.payload };
+    default:
+      return { ...state };
+  }
+};
 
-export const getBookAction = (payload) => ({type: GET_BOOK, payload})
+export const getBookAction = payload => ({ type: GET_BOOK, payload });

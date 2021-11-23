@@ -1,8 +1,8 @@
 const defaultState = {
-  sort: "relevance",
+  sort: 'relevance',
 };
 
-const GET_SORT = "GET_SORT";
+const GET_SORT = 'GET_SORT';
 
 export const sortParameter = (state = defaultState, action) => {
   switch (action.type) {
@@ -13,4 +13,4 @@ export const sortParameter = (state = defaultState, action) => {
   }
 };
 
-export const sortParameterAction = (payload) => ({ type: GET_SORT, payload });
+export const sortParameterAction = payload => ({ type: GET_SORT, payload });
