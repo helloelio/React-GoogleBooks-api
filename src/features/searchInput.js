@@ -11,8 +11,8 @@ function searchInput(props) {
                 type="text"
                 placeholder="Enter the title of the book"
             />
-            <input className="btn-search" type="submit" value="" />
             <FontAwesomeIcon className="btn-search" icon={faSearch} />
+            <input className="btn-search" type="submit" value="" />
         </form>
     );
 }
