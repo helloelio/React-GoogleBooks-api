@@ -106,7 +106,7 @@ function App() {
 
     return (
         <div className="App">
-            <header className="header">
+            <header id='header' className="header">
                 <div className="shadow">
                     <a className="title-link" href="/">
                         <h1 className="search__title">Search for books</h1>
@@ -144,6 +144,7 @@ function App() {
                         />
                     </Routes>
                 )}
+                <a className='nav-arrow' href="#header"></a>
             </main>
         </div>
     );

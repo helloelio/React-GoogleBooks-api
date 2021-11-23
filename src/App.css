@@ -227,6 +227,17 @@ option {
     font-weight: 500;
 }
 
+.nav-arrow {
+    background-image: url("./img/Arrow_top.png");
+    background-size: cover;
+    position: fixed;
+    display: block;
+    width: 30px;
+    height: 30px;
+    right: 5px;
+    bottom: 5px;
+}
+
 @media (max-width: 540px) {
     .shadow {
         padding: 40px;
